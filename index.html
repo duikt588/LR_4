@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Меню</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="menu">
+    <button class="burger" onclick="toggleMenu()">☰</button>
+    <ul id="menuList"></ul>
+  </nav>
+
+  <script>
+    const data = [
+      { title: "Головна", link: "#" },
+      { title: "Про нас", link: "#", children: [
+        { title: "Історія", link: "#" },
+        { title: "Команда", link: "#", children: [
+          { title: "Розробники", link: "#" },
+          { title: "Дизайнери", link: "#" }
+        ]}
+      ]},
+      { title: "Послуги", link: "#" },
+      { title: "Портфоліо", link: "#" },
+      { title: "Контакти", link: "#" }
+    ];
+
+    const menuList = document.getElementById("menuList");
+
+    function createMenu(items) {
+      const ul = document.createElement("ul");
+      items.forEach(item => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.textContent = item.title;
+        a.href = item.link;
+        a.onclick = (e) => {
+          if (item.children) {
+            e.preventDefault();
+            li.classList.toggle("open");
+          }
+        };
+        li.appendChild(a);
+
+        if (item.children) {
+          const subMenu = createMenu(item.children);
+          subMenu.classList.add("sub");
+          li.appendChild(subMenu);
+        }
+
+        ul.appendChild(li);
+      });
+      return ul;
+    }
+
+    const readyMenu = createMenu(data);
+    menuList.appendChild(readyMenu);
+
+    function toggleMenu() {
+      menuList.classList.toggle("show");
+    }
+  </script>
+</body>
+</html>
